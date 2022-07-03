@@ -1,9 +1,7 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const stripe = require("stripe")(
-  "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"
-);
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const cors = require("cors");
 
 app.use(express.urlencoded({ extended: true }));
@@ -11,6 +9,7 @@ app.use(express.json());
 
 app.use(cors());
 
+/*
 app.get("/v1/products", async (req, res) => {
   try {
     const products = await stripe.products.list({
@@ -22,6 +21,7 @@ app.get("/v1/products", async (req, res) => {
     console.log(err);
   }
 });
+*/
 
 app.post("/payment", async (req, res) => {
   console.log(req.body);
@@ -31,7 +31,7 @@ app.post("/payment", async (req, res) => {
     const payment = await stripe.paymentIntents.create({
       amount,
       currency: "BRL",
-      description: "Espatula",
+      description: "Controle de video game",
       payment_method: id,
       confirm: true,
     });
