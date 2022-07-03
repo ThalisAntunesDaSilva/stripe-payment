@@ -1,24 +1,37 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
-const bodyParser = require("body-parser");
+const stripe = require("stripe")(
+  "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"
+);
 const cors = require("cors");
 
-app.use(bodyParser.urlencoded({ extend: true }));
-app.use(bodyParser.json);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 app.use(cors());
 
+app.get("/v1/products", async (req, res) => {
+  try {
+    const products = await stripe.products.list({
+      limit: 3,
+    });
+
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.post("/payment", async (req, res) => {
-  console.log("OLAAAAAAA")
   console.log(req.body);
   let { amount, id } = req.body;
+  console.log(amount);
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
       currency: "BRL",
-      description: "Produto em teste",
+      description: "Espatula",
       payment_method: id,
       confirm: true,
     });
