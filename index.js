@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use(cors());
 
-/*
+
 app.get("/v1/products", async (req, res) => {
   try {
     const products = await stripe.products.list({
@@ -21,7 +21,7 @@ app.get("/v1/products", async (req, res) => {
     console.log(err);
   }
 });
-*/
+
 
 app.post("/payment", async (req, res) => {
   console.log(req.body);
